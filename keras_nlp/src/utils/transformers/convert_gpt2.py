@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 import numpy as np
+
 from keras_nlp.src.utils.preset_utils import HF_CONFIG_FILE
 from keras_nlp.src.utils.preset_utils import get_file
 from keras_nlp.src.utils.preset_utils import jax_memory_cleanup
@@ -169,7 +170,7 @@ def convert_weights(backbone, loader):
     return backbone
 
 
-def load_gpt2_backbone(cls, preset, load_weights, hf_key_prefix=None):
+def load_gpt2_backbone(cls, preset, load_weights, hf_key_prefix):
     transformers_config = load_config(preset, HF_CONFIG_FILE)
     keras_config = convert_backbone_config(transformers_config)
     backbone = cls(**keras_config)

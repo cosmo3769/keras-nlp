@@ -31,7 +31,7 @@ def convert_backbone_config(transformers_config):
     }
 
 
-def convert_weights(backbone, loader, transformers_config):
+def convert_weights(backbone, loader):
     # Embedding layer
     loader.port_weight(
         keras_variable=backbone.get_layer("token_embedding").embeddings,
@@ -154,14 +154,14 @@ def convert_weights(backbone, loader, transformers_config):
     )
 
 
-def load_bert_backbone(cls, preset, load_weights):
+def load_bert_backbone(cls, preset, load_weights, hf_key_prefix):
     transformers_config = load_config(preset, HF_CONFIG_FILE)
     keras_config = convert_backbone_config(transformers_config)
     backbone = cls(**keras_config)
     if load_weights:
         jax_memory_cleanup(backbone)
-        with SafetensorLoader(preset) as loader:
-            convert_weights(backbone, loader, transformers_config)
+        with SafetensorLoader(preset, hf_key_prefix) as loader:
+            convert_weights(backbone, loader)
     return backbone
 
 

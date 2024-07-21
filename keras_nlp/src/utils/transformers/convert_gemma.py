@@ -172,13 +172,13 @@ def convert_weights(backbone, loader, transformers_config):
     return backbone
 
 
-def load_gemma_backbone(cls, preset, load_weights):
+def load_gemma_backbone(cls, preset, load_weights, hf_key_prefix):
     transformers_config = load_config(preset, HF_CONFIG_FILE)
     keras_config = convert_backbone_config(transformers_config)
     backbone = cls(**keras_config)
     if load_weights:
         jax_memory_cleanup(backbone)
-        with SafetensorLoader(preset) as loader:
+        with SafetensorLoader(preset, hf_key_prefix) as loader:
             convert_weights(backbone, loader, transformers_config)
     return backbone
 

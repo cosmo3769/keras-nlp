@@ -204,7 +204,9 @@ class Backbone(keras.Model):
         format = check_format(preset)
 
         if format == "transformers":
-            return load_transformers_backbone(cls, preset, load_weights, hf_key_prefix)
+            return load_transformers_backbone(
+                cls, preset, load_weights, hf_key_prefix
+            )
 
         preset_cls = check_config_class(preset)
         if not issubclass(preset_cls, cls):

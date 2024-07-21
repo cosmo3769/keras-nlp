@@ -32,7 +32,7 @@ from keras_nlp.src.utils.transformers.convert_pali_gemma import (
 )
 
 
-def load_transformers_backbone(cls, preset, load_weights, hf_key_prefix=None):
+def load_transformers_backbone(cls, preset, load_weights, hf_key_prefix):
     """
     Load a Transformer model config and weights as a KerasNLP backbone.
 
@@ -40,6 +40,7 @@ def load_transformers_backbone(cls, preset, load_weights, hf_key_prefix=None):
         cls (class): Keras model class.
         preset (str): Preset configuration name.
         load_weights (bool): Whether to load the weights.
+        hf_key_prefix (str): The prefix for hf weight keys.
 
     Returns:
         backbone: Initialized Keras model backbone.
@@ -47,13 +48,15 @@ def load_transformers_backbone(cls, preset, load_weights, hf_key_prefix=None):
     if cls is None:
         raise ValueError("Backbone class is None")
     if cls.__name__ == "BertBackbone":
-        return load_bert_backbone(cls, preset, load_weights)
+        return load_bert_backbone(cls, preset, load_weights, hf_key_prefix)
     if cls.__name__ == "GemmaBackbone":
-        return load_gemma_backbone(cls, preset, load_weights)
+        return load_gemma_backbone(cls, preset, load_weights, hf_key_prefix)
     if cls.__name__ == "Llama3Backbone":
-        return load_llama3_backbone(cls, preset, load_weights)
+        return load_llama3_backbone(cls, preset, load_weights, hf_key_prefix)
     if cls.__name__ == "PaliGemmaBackbone":
-        return load_pali_gemma_backbone(cls, preset, load_weights)
+        return load_pali_gemma_backbone(
+            cls, preset, load_weights, hf_key_prefix
+        )
     if cls.__name__ == "GPT2Backbone":
         return load_gpt2_backbone(cls, preset, load_weights, hf_key_prefix)
     raise ValueError(
