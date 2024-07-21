@@ -32,7 +32,7 @@ from keras_nlp.src.utils.transformers.convert_pali_gemma import (
 )
 
 
-def load_transformers_backbone(cls, preset, load_weights):
+def load_transformers_backbone(cls, preset, load_weights, hf_key_prefix=None):
     """
     Load a Transformer model config and weights as a KerasNLP backbone.
 
@@ -55,7 +55,7 @@ def load_transformers_backbone(cls, preset, load_weights):
     if cls.__name__ == "PaliGemmaBackbone":
         return load_pali_gemma_backbone(cls, preset, load_weights)
     if cls.__name__ == "GPT2Backbone":
-        return load_gpt2_backbone(cls, preset, load_weights)
+        return load_gpt2_backbone(cls, preset, load_weights, hf_key_prefix)
     raise ValueError(
         f"{cls} has not been ported from the Hugging Face format yet. "
         "Please check Hugging Face Hub for the Keras model. "

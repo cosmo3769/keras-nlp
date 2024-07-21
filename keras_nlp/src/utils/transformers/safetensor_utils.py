@@ -26,7 +26,7 @@ except ImportError:
 
 
 class SafetensorLoader(contextlib.ExitStack):
-    def __init__(self, preset):
+    def __init__(self, preset, hf_key_prefix=None):
         super().__init__()
 
         if safetensors is None:
@@ -42,6 +42,9 @@ class SafetensorLoader(contextlib.ExitStack):
         else:
             self.safetensor_config = None
         self.safetensor_files = {}
+
+        self.hf_key_prefix = hf_key_prefix
+
 
     def get_tensor(self, hf_weight_key):
         if self.safetensor_config is None:
@@ -61,6 +64,8 @@ class SafetensorLoader(contextlib.ExitStack):
         return file.get_tensor(hf_weight_key)
 
     def port_weight(self, keras_variable, hf_weight_key, hook_fn=None):
+        if self.hf_key_prefix is not None:
+            hf_weight_key = f"{self.hf_key_prefix}.{hf_weight_key}"
         hf_tensor = self.get_tensor(hf_weight_key)
         if hook_fn:
             hf_tensor = hook_fn(hf_tensor, list(keras_variable.shape))
