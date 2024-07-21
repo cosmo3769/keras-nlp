@@ -157,6 +157,7 @@ class Backbone(keras.Model):
         cls,
         preset,
         load_weights=True,
+        hf_key_prefix=None,
         **kwargs,
     ):
         """Instantiate a `keras_nlp.models.Backbone` from a model preset.
@@ -203,7 +204,7 @@ class Backbone(keras.Model):
         format = check_format(preset)
 
         if format == "transformers":
-            return load_transformers_backbone(cls, preset, load_weights)
+            return load_transformers_backbone(cls, preset, load_weights, hf_key_prefix)
 
         preset_cls = check_config_class(preset)
         if not issubclass(preset_cls, cls):

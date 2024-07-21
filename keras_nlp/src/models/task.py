@@ -144,6 +144,7 @@ class Task(PipelineModel):
         cls,
         preset,
         load_weights=True,
+        hf_key_prefix=None,
         **kwargs,
     ):
         """Instantiate a `keras_nlp.models.Task` from a model preset.
@@ -195,7 +196,7 @@ class Task(PipelineModel):
             if cls.preprocessor_cls is None:
                 raise ValueError("Preprocessor class is None")
 
-            backbone = cls.backbone_cls.from_preset(preset)
+            backbone = cls.backbone_cls.from_preset(preset, hf_key_prefix)
             preprocessor = cls.preprocessor_cls.from_preset(preset)
             return cls(backbone=backbone, preprocessor=preprocessor, **kwargs)
 
