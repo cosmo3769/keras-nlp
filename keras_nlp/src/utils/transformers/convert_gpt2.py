@@ -176,7 +176,7 @@ def load_gpt2_backbone(cls, preset, load_weights, hf_key_prefix=None):
     if load_weights:
         jax_memory_cleanup(backbone)
         with SafetensorLoader(preset, hf_key_prefix) as loader:
-            convert_weights(backbone, loader, transformers_config)
+            convert_weights(backbone, loader)
     return backbone
 
 
